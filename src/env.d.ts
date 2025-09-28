@@ -1,7 +1,9 @@
-/// <reference types="vite/client" />
+export {};
 
-declare interface Window {
-  electronAPI?: {
-    onSpeedUpdate: (callback: (speed: number) => void) => () => void;
-  };
+declare global {
+  interface Window {
+    telemetry: {
+      onSpeed: (callback: (speed: number) => void) => void;
+    };
+  }
 }
