@@ -1,15 +1,18 @@
 <template>
-  <div class="grid h-screen w-screen grid-cols-4 gap-4 p-4">
-    <div class="bg-white-200 rounded-box border border-white p-4">
+  <div class="grid h-screen grid-cols-1 md:grid-cols-12">
+    <!-- Left Panel -->
+    <aside class="bg-base-200 order-1 overflow-y-auto p-4 md:order-1 md:col-span-3">
       <slot name="left"></slot>
-    </div>
+    </aside>
 
-    <div class="bg-white-300 rounded-box col-span-2 border border-white p-4">
+    <!-- Center (Track map, main content) -->
+    <main class="order-3 overflow-y-auto p-4 md:order-2 md:col-span-6">
       <slot name="center"></slot>
-    </div>
+    </main>
 
-    <div class="bg-white-200 rounded-box border border-white p-4">
+    <!-- Right Panel (Chat) -->
+    <aside class="bg-base-200 order-2 overflow-y-auto p-4 md:order-3 md:col-span-3">
       <slot name="right"></slot>
-    </div>
+    </aside>
   </div>
 </template>
