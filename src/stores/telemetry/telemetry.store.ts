@@ -1,10 +1,13 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { listen } from '@tauri-apps/api/event';
+import { useTelemetryHistoryStore } from './telemetryHistory.store';
 
 export const useTelemetryStore = defineStore('telemetry', () => {
   // --- State ---
   const speed = ref<number>(0); // en km/h
+  const throttle = ref<number>(0); // en % (0-1)
+  const brake = ref<number>(0); // en % (0-1)
   const rpm = ref<number>(0); // en tours/minute
   const gear = ref<number>(0); // rapport engagé
   const tyreSurfaceTemps = ref({
@@ -16,6 +19,7 @@ export const useTelemetryStore = defineStore('telemetry', () => {
 
   // --- Actions ---
   async function startListening() {
+    const telemetryHistory = useTelemetryHistoryStore();
     await listen<{
       speed: number;
       engine_rpm: number;
@@ -26,28 +30,38 @@ export const useTelemetryStore = defineStore('telemetry', () => {
         rear_left: number;
         rear_right: number;
       };
+      brake: number;
+      throttle: number;
     }>('telemetry:update', (event) => {
       const {
         speed: newSpeed,
         engine_rpm: newRpm,
         gear: newGear,
         tyre_surface_temps: newTyreTemps,
+        brake: newBrake,
+        throttle: newThrottle,
       } = event.payload;
 
-      console.log('event.payload', event.payload);
-
+      // --- valeurs actuelles
       speed.value = newSpeed;
       rpm.value = newRpm;
       gear.value = newGear;
       tyreSurfaceTemps.value = newTyreTemps;
+      brake.value = newBrake;
+      throttle.value = newThrottle;
+
+      // --- ajouter à l'historique
+      telemetryHistory.addEntry(newSpeed, newThrottle, newBrake, newRpm, newGear, newTyreTemps);
     });
   }
 
   return {
     speed,
+    brake,
     rpm,
     gear,
     tyreSurfaceTemps,
+
     startListening,
   };
 });

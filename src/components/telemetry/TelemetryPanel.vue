@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useTelemetryStore } from '@/stores/telemetry.store';
+import { useTelemetryStore } from '@/stores/telemetry/telemetry.store';
+import SpeedLineChart from '@/components/charts/speed/SpeedLineChart.vue';
 
 const telemetry = useTelemetryStore();
 
@@ -36,6 +37,14 @@ onMounted(() => {
         <div>FR: {{ telemetry.tyreSurfaceTemps.front_right }} °C</div>
         <div>RL: {{ telemetry.tyreSurfaceTemps.rear_left }} °C</div>
         <div>RR: {{ telemetry.tyreSurfaceTemps.rear_right }} °C</div>
+      </div>
+    </div>
+
+    <!-- Graphique vitesse + freinage -->
+    <div class="stat">
+      <div class="stat-title">Throttle & Brake</div>
+      <div class="stat-value min-w-0">
+        <SpeedLineChart />
       </div>
     </div>
   </div>

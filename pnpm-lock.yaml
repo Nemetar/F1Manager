@@ -17,6 +17,9 @@ importers:
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.6.3)(vue@3.5.22(typescript@5.6.3))
+      uplot:
+        specifier: ^1.6.32
+        version: 1.6.32
       vue:
         specifier: ^3.5.13
         version: 3.5.22(typescript@5.6.3)
@@ -1420,6 +1423,9 @@ packages:
   undici-types@7.12.0:
     resolution: {integrity: sha512-goOacqME2GYyOZZfb5Lgtu+1IDmAlAEu5xnD3+xTzS10hT0vzpf0SPjkXwAw9Jm+4n/mQGDP3LO8CPbYROeBfQ==}
 
+  uplot@1.6.32:
+    resolution: {integrity: sha512-KIMVnG68zvu5XXUbC4LQEPnhwOxBuLyW1AHtpm6IKTXImkbLgkMy+jabjLgSLMasNuGGzQm/ep3tOkyTxpiQIw==}
+
   uri-js@4.4.1:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
 
@@ -2669,6 +2675,8 @@ snapshots:
   typescript@5.6.3: {}
 
   undici-types@7.12.0: {}
+
+  uplot@1.6.32: {}
 
   uri-js@4.4.1:
     dependencies:
