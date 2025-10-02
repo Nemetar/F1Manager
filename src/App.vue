@@ -1,21 +1,32 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-
-const speed = ref<number | null>(null);
-
-onMounted(() => {
-  window.telemetry?.onSpeed((s: number) => {
-    speed.value = s;
-  });
-});
+import MainLayout from '@/components/layouts/MainLayout.vue';
+import TelemetryPanel from '@/components/telemetry/TelemetryPanel.vue';
 </script>
 
 <template>
-  <div class="bg-base-200 flex h-screen flex-col items-center justify-center">
-    <h1 class="text-3xl font-bold">🏎️ F1 Telemetry</h1>
-    <p v-if="speed !== null" class="mt-4 text-2xl">
-      Speed: <span class="text-primary">{{ speed }} km/h</span>
-    </p>
-    <p v-else class="mt-4">Waiting for data...</p>
-  </div>
+  <MainLayout>
+    <!-- Données voiture -->
+    <template #left>
+      <TelemetryPanel />
+    </template>
+
+    <!-- Carte du circuit -->
+    <template #center>
+      <div class="flex h-full items-center justify-center">
+        <div class="mockup-window bg-base-300 h-full w-full">
+          <div class="p-4">Track Map (position en temps réel ici)</div>
+        </div>
+      </div>
+    </template>
+
+    <!-- Chat ingénieur -->
+    <template #right>
+      <div class="chat chat-start">
+        <div class="chat-bubble">Tu freines trop tard au virage 3 !</div>
+      </div>
+      <div class="chat chat-end">
+        <div class="chat-bubble chat-bubble-primary">Reçu, je corrige au prochain tour.</div>
+      </div>
+    </template>
+  </MainLayout>
 </template>
