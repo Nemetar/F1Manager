@@ -3,6 +3,23 @@ import { defineStore } from 'pinia';
 import { listen } from '@tauri-apps/api/event';
 import { useTelemetryHistoryStore } from './telemetryHistory.store';
 
+type CarTelemetry = {
+  speed: number;
+  engine_rpm: number;
+  gear: number;
+  brake: number;
+  throttle: number;
+  tyre_surface_temps: {
+    front_left: number;
+    front_right: number;
+    rear_left: number;
+    rear_right: number;
+  };
+  world_position_x: number;
+  world_position_y: number;
+  world_position_z: number;
+};
+
 export const useTelemetryStore = defineStore('telemetry', () => {
   // --- State ---
   const speed = ref<number>(0); // en km/h
@@ -18,21 +35,9 @@ export const useTelemetryStore = defineStore('telemetry', () => {
   }); // Températures des pneus en surface
 
   // --- Actions ---
-  async function startListening() {
+  const startListening = async () => {
     const telemetryHistory = useTelemetryHistoryStore();
-    await listen<{
-      speed: number;
-      engine_rpm: number;
-      gear: number;
-      tyre_surface_temps: {
-        front_left: number;
-        front_right: number;
-        rear_left: number;
-        rear_right: number;
-      };
-      brake: number;
-      throttle: number;
-    }>('telemetry:update', (event) => {
+    await listen<CarTelemetry>('telemetry:update', (event) => {
       const {
         speed: newSpeed,
         engine_rpm: newRpm,
@@ -53,10 +58,11 @@ export const useTelemetryStore = defineStore('telemetry', () => {
       // --- ajouter à l'historique
       telemetryHistory.addEntry(newSpeed, newThrottle, newBrake, newRpm, newGear, newTyreTemps);
     });
-  }
+  };
 
   return {
     speed,
+    throttle,
     brake,
     rpm,
     gear,

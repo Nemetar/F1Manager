@@ -28,8 +28,20 @@ pub async fn start_udp_listener(app_handle: AppHandle) {
                     }
                 }
                 F1Data::LapData(data) => {
-                    // On envoie les infos de tour au front
-                    app_handle.emit("telemetry:lap", data).unwrap();
+                    if let Some(car) = data.lap_data.first() {
+                        // On envoie les infos de tour au front
+                        app_handle.emit("telemetry:lap", car).unwrap();
+                    }
+                }
+                F1Data::CarMotionData(data) => {
+                    if let Some(car) = data.car_motion_data.first() {
+                        // On envoie les infos de mouvement au front
+                        app_handle.emit("telemetry:motion", car).unwrap(); 
+                    }
+                }
+                F1Data::SessionData(data) => {
+                    // On envoie les infos de session au front
+                    app_handle.emit("telemetry:session", data).unwrap();
                 }
                 _ => {}
             }

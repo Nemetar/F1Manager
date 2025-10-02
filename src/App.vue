@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import MainLayout from '@/components/layouts/MainLayout.vue';
 import TelemetryPanel from '@/components/telemetry/TelemetryPanel.vue';
+import TrackMap from '@/components/maps/TrackMap.vue';
 </script>
 
 <template>
@@ -14,7 +15,7 @@ import TelemetryPanel from '@/components/telemetry/TelemetryPanel.vue';
     <template #center>
       <div class="flex h-full items-center justify-center">
         <div class="mockup-window bg-base-300 h-full w-full">
-          <div class="p-4">Track Map (position en temps réel ici)</div>
+          <TrackMap />
         </div>
       </div>
     </template>
