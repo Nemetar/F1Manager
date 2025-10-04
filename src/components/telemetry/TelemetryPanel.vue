@@ -15,13 +15,17 @@ onMounted(() => {
     <!-- Vitesse -->
     <div class="stat">
       <div class="stat-title text-xs sm:text-sm">Vitesse</div>
-      <div class="stat-value text-primary text-lg sm:text-xl md:text-2xl">{{ telemetry.speed }} km/h</div>
+      <div class="stat-value text-primary text-lg sm:text-xl md:text-2xl">
+        {{ telemetry.speed }} km/h
+      </div>
     </div>
 
     <!-- RPM + Gear -->
     <div class="stat">
       <div class="stat-title text-xs sm:text-sm">Régime moteur</div>
-      <div class="stat-value text-secondary text-lg sm:text-xl md:text-2xl">{{ telemetry.rpm }} rpm</div>
+      <div class="stat-value text-secondary text-lg sm:text-xl md:text-2xl">
+        {{ telemetry.rpm }} rpm
+      </div>
     </div>
 
     <div class="stat">
@@ -32,7 +36,7 @@ onMounted(() => {
     <!-- Pneus -->
     <div class="stat">
       <div class="stat-title text-xs sm:text-sm">Température des pneus</div>
-      <div class="grid grid-cols-2 gap-1 sm:gap-2 text-sm sm:text-base md:text-lg font-bold">
+      <div class="grid grid-cols-2 gap-1 text-sm font-bold sm:gap-2 sm:text-base md:text-lg">
         <div class="truncate">FL: {{ telemetry.tyreSurfaceTemps.front_left }}°C</div>
         <div class="truncate">FR: {{ telemetry.tyreSurfaceTemps.front_right }}°C</div>
         <div class="truncate">RL: {{ telemetry.tyreSurfaceTemps.rear_left }}°C</div>
