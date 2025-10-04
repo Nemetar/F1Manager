@@ -69,5 +69,5 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="chartEl" class="bg-base-200 h-[150px] w-full overflow-hidden rounded-lg"></div>
+  <div ref="chartEl" class="bg-base-200 h-full w-full overflow-hidden rounded-lg"></div>
 </template>
