@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useTelemetryStore } from '@/stores/telemetry/telemetry.store';
+
 import SpeedLineChart from '@/components/charts/speed/SpeedLineChart.vue';
+import TyreTempCar from '@/components/telemetry/tires/TireTempCar.vue';
 
 const telemetry = useTelemetryStore();
 
@@ -36,12 +38,14 @@ onMounted(() => {
     <!-- Pneus -->
     <div class="stat">
       <div class="stat-title text-xs sm:text-sm">Température des pneus</div>
-      <div class="grid grid-cols-2 gap-1 text-sm font-bold sm:gap-2 sm:text-base md:text-lg">
-        <div class="truncate">FL: {{ telemetry.tyreSurfaceTemps.front_left }}°C</div>
-        <div class="truncate">FR: {{ telemetry.tyreSurfaceTemps.front_right }}°C</div>
-        <div class="truncate">RL: {{ telemetry.tyreSurfaceTemps.rear_left }}°C</div>
-        <div class="truncate">RR: {{ telemetry.tyreSurfaceTemps.rear_right }}°C</div>
-      </div>
+      <TyreTempCar
+        class="mx-auto max-h-[200px] max-w-[200px]"
+        :fl="telemetry.tyreSurfaceTemps.front_left"
+        :fr="telemetry.tyreSurfaceTemps.front_right"
+        :rl="telemetry.tyreSurfaceTemps.rear_left"
+        :rr="telemetry.tyreSurfaceTemps.rear_right"
+        :show-legend="false"
+      />
     </div>
 
     <!-- Graphique vitesse + freinage -->
