@@ -1,71 +1,57 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import AustriaMinimap from '../minimaps/AustriaMinimap.vue';
+
+import type { Component } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useLapPositionStore } from '@/stores/laps/lapPosition.store';
 import { useSessionStore } from '@/stores/sessions/session.store';
 
-// SVG du circuit
-import AustriaMinimap from '@/components/minimaps/AustriaMinimap.vue';
-
-const lapStore = useLapPositionStore();
+const lapPositionStore = useLapPositionStore();
 const sessionStore = useSessionStore();
 
-const playerPos = ref({ x: 0, y: 0 });
-
-let path: SVGPathElement | null = null;
-let pathLength = 0;
-
 onMounted(() => {
-  lapStore.startListening();
   sessionStore.startListening();
-
-  path = document.querySelector('#trackPath') as SVGPathElement;
-  if (path) {
-    pathLength = path.getTotalLength();
-    console.log('SVG path length (pixels):', pathLength);
-  }
+  lapPositionStore.startListening();
 });
 
-watch(
-  () => lapStore.lapDistance,
-  (lapDistance) => {
-    if (!path || pathLength === 0) return;
-    if (!sessionStore.trackLength || sessionStore.trackLength <= 0) return;
-    if (!lapDistance || lapDistance < 0) return;
+const trackPath = ref<SVGPathElement | null>(null);
+const trackPathLength = ref(0);
 
-    const ratio = lapDistance / sessionStore.trackLength;
-    const distanceOnPath = (pathLength - ratio * pathLength) % pathLength;
+const onTrackReady = ({ path, length }: { path: SVGPathElement; length: number }) => {
+  trackPath.value = path;
+  trackPathLength.value = length;
+};
 
-    const point = path.getPointAtLength(distanceOnPath);
-    playerPos.value = { x: point.x, y: point.y };
-  },
-);
+const playerPosition = computed(() => {
+  if (!trackPath.value || trackPathLength.value <= 0 || !sessionStore.trackLength) {
+    return null;
+  }
 
-watch(
-  () => lapStore.lapDistance,
-  (lapDistance) => {
-    console.log(
-      'lapDistance',
-      lapDistance,
-      'trackLength',
-      sessionStore.trackLength,
-      'progress %',
-      (lapDistance / sessionStore.trackLength) * 100,
-    );
-  },
-);
+  const progression = lapPositionStore.lapDistance / sessionStore.trackLength;
+
+  return trackPath.value.getPointAtLength(trackPathLength.value * progression);
+});
+
+const TrackMapComponent = computed<Component | null>(() => {
+  const trackComponents: Record<number, Component> = {
+    17: AustriaMinimap,
+  };
+  return sessionStore.trackId ? (trackComponents[sessionStore.trackId] ?? null) : null;
+});
 </script>
 
 <template>
-  <div class="relative h-[400px] w-[400px]">
-    <!-- Circuit -->
-    <AustriaMinimap />
-
-    <!-- Joueur -->
-    <svg
-      viewBox="0 0 682.66669 682.66669"
-      class="pointer-events-none absolute inset-0 h-full w-full"
-    >
-      <circle :cx="playerPos.x" :cy="playerPos.y" r="6" fill="red" />
-    </svg>
+  <div class="flex h-full w-full items-center justify-center overflow-hidden">
+    <component :is="TrackMapComponent" @ready="onTrackReady">
+      <template #playerPosition>
+        <circle
+          v-if="playerPosition"
+          :cx="playerPosition.x"
+          :cy="playerPosition.y"
+          r="8"
+          fill="red"
+        />
+      </template>
+    </component>
   </div>
 </template>

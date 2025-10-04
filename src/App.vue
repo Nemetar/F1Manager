@@ -14,8 +14,10 @@ import TrackMap from '@/components/maps/TrackMap.vue';
     <!-- Carte du circuit -->
     <template #center>
       <div class="flex h-full items-center justify-center">
-        <div class="mockup-window bg-base-300 h-full w-full">
-          <TrackMap />
+        <div class="bg-base-300 h-full w-full rounded-sm">
+          <div class="h-full w-full p-4">
+            <TrackMap />
+          </div>
         </div>
       </div>
     </template>

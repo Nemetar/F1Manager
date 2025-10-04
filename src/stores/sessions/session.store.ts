@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { listen } from '@tauri-apps/api/event';
 
 type SessionEvent = {
-  track_id: number;
+  track: number;
   track_length: number;
   total_laps?: number;
   weather?: number;
@@ -24,7 +24,7 @@ export const useSessionStore = defineStore('session', () => {
   const startListening = async () => {
     await listen<SessionEvent>('telemetry:session', (event) => {
       const {
-        track_id,
+        track,
         track_length,
         total_laps,
         weather: w,
@@ -32,7 +32,7 @@ export const useSessionStore = defineStore('session', () => {
         air_temperature,
       } = event.payload;
 
-      trackId.value = track_id;
+      trackId.value = track;
       trackLength.value = track_length;
       totalLaps.value = total_laps ?? null;
       weather.value = w ?? null;

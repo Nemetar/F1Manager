@@ -6,7 +6,7 @@
     </aside>
 
     <!-- Center (Track map, main content) -->
-    <main class="order-3 overflow-y-auto p-4 md:order-2 md:col-span-6">
+    <main class="order-3 overflow-y-auto p-2 md:order-2 md:col-span-6">
       <slot name="center"></slot>
     </main>
 
